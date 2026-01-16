@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>C.AOSAMA</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+}
+
+/* الفورم */
+.container {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  margin: 10px;
+  padding: 40px 35px;
+  border-radius: 14px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* العنوان */
+.container h2 {
+  margin-bottom: 25px;
+  color: #1e3c72;
+  font-size: 24px;
+}
+
+/* الانبوت */
+.container input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.container input:focus {
+  outline: none;
+  border-color: #2a5298;
+}
+
+/* الزرار */
+.container button {
+  width: 100%;
+  padding: 14px;
+  background: #2a5298;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.container button:hover {
+  background: #1e3c72;
+}
+
+/* الرسالة */
+#status {
+  margin-top: 15px;
+  font-size: 14px;
+  color: green;
+}
+
+/* موبايل */
+@media (max-width: 600px) {
+  .container {
+    padding: 35px 20px;
+  }
+
+  .container h2 {
+    font-size: 22px;
+  }
+
+  .container input,
+  .container button {
+    font-size: 16px;
+    padding: 15px;
+  }
+}
+</style>
+
+<body>
+  <div class="container">
+    <h2>Session Registration</h2>
+
+    <input type="text" id="input1" placeholder="Name">
+    <input type="date" id="input2" placeholder="Enter second value">
+
+    <button id="sendBtn">Send Data</button>
+
+    <p id="status"></p>
+  </div>
+</body>
+  <script type="module">
+    // Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // 🔹 Firebase Config (بتاعك)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCG_WgG0WAEU8IwUy1AThN4gv-2tt4uatI",
+      authDomain: "aosama-squash.firebaseapp.com",
+      databaseURL: "https://aosama-squash-default-rtdb.firebaseio.com",
+      projectId: "aosama-squash",
+      storageBucket: "aosama-squash.firebasestorage.app",
+      messagingSenderId: "1010834525956",
+      appId: "1:1010834525956:web:8b44392a9f2b76c6ceca51",
+      measurementId: "G-PLCJ8Q4J45"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Send Data
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      const input1 = document.getElementById("input1").value;
+      const input2 = document.getElementById("input2").value;
+
+      if (!input1 || !input2) {
+        document.getElementById("status").style.color = "red";
+        document.getElementById("status").innerText = "Please fill all fields ❌";
+        return;
+      }
+
+      push(ref(database, "formData"), {
+        value1: input1,
+        value2: input2
+      });
+
+      document.getElementById("status").style.color = "green";
+      document.getElementById("status").innerText = "Data sent successfully ✅";
+
+      document.getElementById("input1").value = "";
+      document.getElementById("input2").value = "";
+    });
+  </script>
+
+</body>
+</html>
